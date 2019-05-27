@@ -1,0 +1,4 @@
+
+DROP TABLE IF EXISTS `minions`;
+
+DROP TABLE IF EXISTS `towns`;
