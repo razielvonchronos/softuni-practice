@@ -2,25 +2,24 @@
 
 $input = explode(' ', readline());
 
-$sequence = ['key' => 0, 'len'=> 1];
+//$input = explode(' ', "4 4 4 4");
 
-for ($i = count($input) - 1; $i >= 0; $i--) {
-    $key = $i;
-    $len  = 1;
+$sequence = ['key' => 0, 'len' => 1];
+
+for ($i = 1; $i <= count($input) - 1; $i++) {
+    $len = 1;
     for ($j = $i - 1; $j >= 0; $j--) {
-        // make the code looking more understandable by setting $a and $b variables
         $a = $input[$i];
         $b = $input[$j];
-        if ($b != $a)
+        if ($a != $b)
             break;
-        $key = $j;
         $len++;
     }
-    if($sequence['len'] <= $len)
-        $sequence = ['key' => $key, 'len'=> $len];
+    if ($sequence['len'] < $len)
+        $sequence = ['key' => ($i - $len) + 1, 'len' => $len];
 }
 
-$sequence['value'] = array_slice($input, $sequence['key'], $sequence['len']);
+$sequence['value'] = array_slice($input, $sequence['key'] , $sequence['len']);
 print implode(' ', $sequence['value']);
 
 //var_dump($sequence);

@@ -1,31 +1,35 @@
 <?php
 
-$sum = 0;
 $matrix = [];
-list($y, $x) = explode(', ', readline());
+$sums = [];
+list($x, $y) = explode(', ', readline());
 
-
-for ($row = 0; $row < $y; $row++) {
+for ($row = 0; $row < $x; $row++) {
     $matrix[] = explode(', ', readline());
 }
-
-$square = [];
-
-for ($r = count($matrix) - 1; $r >= 0; $r--) {
-    $square[$r] = [0, 1];
-    for ($c = 0; $c < count($matrix[$r]); $c++) {
-        if (!isset($matrix[$r][$c + 1]))
-            continue;
-        if ($matrix[$r][$c] + $matrix[$r][$c + 1] > $matrix[$r][$square[$r][$a]] + $matrix[$r][$square[$r][$b]])
-            list($a, $b) = [$c, $c + 1];
+$count = 0;
+for ($rw = 1; $rw < $x; $rw++) {
+    for ($cl = 1; $cl < $y; $cl++) {
+        $a = $matrix[$rw - 1][$cl - 1];
+        $b = $matrix[$rw - 1][$cl];
+        $c = $matrix[$rw][$cl - 1];
+        $d = $matrix[$rw][$cl];
+        $sums[$count] = [$a, $b, $c, $d];
+        $count++;
     }
 }
 
-//var_dump($square);
-$sum = 0;
-$square = array_reverse($square);
-foreach ($square as $r => $v) {
-    printf('%d %d' . PHP_EOL, $matrix[$r][$a], $matrix[$r][$b]);
-    $sum += $matrix[$r][$a] + $matrix[$r][$b];
+uksort($sums, function ($a, $b) use ($sums) {
+//   printf("%d %d".PHP_EOL, array_sum($sums[$a]), array_sum($sums[$b]));
+    $sumA = array_sum($sums[$a]);
+    $sumB = array_sum($sums[$b]);
+    return $sumB <=> $sumA;
+});
+
+foreach ($sums as $k => $result)
+{
+    printf('%d %d ' . PHP_EOL, $result[0], $result[1]);
+    printf('%d %d' . PHP_EOL, $result[2], $result[3]);
+    printf('%d '. PHP_EOL, array_sum($result));
+    break;
 }
-print $sum;
