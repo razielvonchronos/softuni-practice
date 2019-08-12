@@ -27,7 +27,6 @@ class Number
     }
 
     /**
-     * @param int $i
      * @return int
      */
     public function IntToString()
