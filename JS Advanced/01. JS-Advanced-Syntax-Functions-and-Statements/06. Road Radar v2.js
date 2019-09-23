@@ -12,7 +12,7 @@ function solve(radar) {
         [20, 'excessive speeding'],
         [0, 'speeding'],
     ]
-    let speeding = Math.round(speed - limits[zone]);
+    let speeding = speed - limits[zone];
     if(speeding <= 0)
         return;
     let result = msg.find(x => x[0] < speeding);
