@@ -8,15 +8,15 @@ function solve(radar) {
     }
 
     let msg = [
-        [40, 'reckless driving'],
-        [20, 'excessive speeding'],
         [0, 'speeding'],
+        [20, 'excessive speeding'],
+        [40, 'reckless driving'],
     ]
+
     let speeding = speed - limits[zone];
-    if(speeding <= 0)
-        return;
-    let result = msg.find(x => x[0] < speeding);
-    console.log(result.pop());
+    let result = msg.filter(m => m[0] < speeding).pop();
+    if (result)
+        console.log(result.pop());
 }
 
 solve([40, 'city']);
