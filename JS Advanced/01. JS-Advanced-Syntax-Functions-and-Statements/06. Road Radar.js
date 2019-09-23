@@ -1,6 +1,5 @@
 function solve(radar) {
-    let speed = radar[0];
-    let zone = radar[1];
+    let [speed, zone] = radar;
     let data = {
         'motorway': 130,
         'interstate': 90,
