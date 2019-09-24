@@ -6,13 +6,11 @@ function solve(radar) {
         'city': 50,
         'residential': 20
     }
-
     let msg = [
         [0, 'speeding'],
         [20, 'excessive speeding'],
         [40, 'reckless driving'],
     ]
-
     let speeding = speed - limits[zone];
     let result = msg.filter(m => m[0] < speeding).pop();
     if (result)
