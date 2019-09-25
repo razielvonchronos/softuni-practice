@@ -1,6 +1,4 @@
 function solve(input) {
-  const byCCount = (a, b) => Object.keys(web.data[s][b]) - Object.keys(web.data[s][a]);
-  const myMCount = (a, b) => Object.keys(web.data[s][b]) - Object.keys(web.data[s][a]);
   let web = {
     data: {},
     build(data) {
@@ -14,13 +12,13 @@ function solve(input) {
     print() {
       objlen = (obj) => { return Object.keys(obj).length }
       let d = this.data;
-      let systems = Object.keys(decodeURIComponent)
+      let systems = Object.keys(d)
         .sort()
-        .sort(byCCount);
+        .sort((a, b) => objlen(this.data[b]) - objlen(this.data[a]))
       for (let s of systems) {
         console.log(s);
         let modules = Object.keys(d[s])
-          .sort(myMCount);
+          .sort((a, b) => objlen(this.data[s][b]) - objlen(this.data[s][a]))
         for (let m of modules) {
           console.log('|||' + m);
           for (let c of d[s][m]) {
