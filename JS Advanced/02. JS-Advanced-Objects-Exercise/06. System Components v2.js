@@ -14,11 +14,11 @@ function solve(input) {
       let d = this.data;
       let systems = Object.keys(d)
         .sort()
-        .sort((a, b) => objlen(this.data[b]) - objlen(this.data[a]))
+        .sort((a, b) => objlen(d[b]) - objlen(d[a]))
       for (let s of systems) {
         console.log(s);
         let modules = Object.keys(d[s])
-          .sort((a, b) => objlen(this.data[s][b]) - objlen(this.data[s][a]))
+          .sort((a, b) => objlen(d[s][b]) - objlen(d[s][a]))
         for (let m of modules) {
           console.log('|||' + m);
           for (let c of d[s][m]) {
