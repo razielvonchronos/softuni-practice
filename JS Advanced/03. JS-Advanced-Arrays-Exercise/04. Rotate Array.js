@@ -1,8 +1,8 @@
 function solve(params) {
   let array = params.slice(0, -1);
-  let times = params.slice(-1);
-  for (times;times > 0; times--)
-  {
+  let i = params.slice(-1).pop();
+  i %= array.length;
+  for (i; 0 < i; i--) {
     let x = array.pop();
     array.unshift(x)
   }
