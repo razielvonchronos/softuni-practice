@@ -45,7 +45,7 @@ function solve(params) {
       return result;
     },
     slot_available(x, y) {
-      let result = board.cells()[x][y] === false;
+      let result = board.init[x][y] === false;
       if (!result) {
         console.log("This place is already taken. Please choose another!")
         // console.log(x,y)
@@ -55,7 +55,7 @@ function solve(params) {
     slot_use(x, y) {
       this.init[x][y] = player.symbol();
       this.win_check();
-      // console.log(board.cells(), board.cols(), board.diagonals());
+      // console.log(board.init);
     },
     win_check() {
       player.winner = this.cells()
