@@ -3,12 +3,12 @@ function solve(params) {
   {
     player: "X",
     winner: false,
-    init: Array(3).fill().map(() => Array(3).fill(false)),
+    board: Array(3).fill().map(() => Array(3).fill(false)),
     slot_use() { // check if slot is available or send log.
       let [col, row] = params.shift().split(' ');
-      let available = game.init[col][row] === false;
+      let available = game.board[col][row] === false;
       if (available)
-        game.init[col][row] = this.player
+        game.board[col][row] = this.player
       else
         console.log("This place is already taken. Please choose another!")
       return available;
@@ -19,33 +19,32 @@ function solve(params) {
       this.isWinner()
       game.player = game.player === "X" ? "O" : "X"
     },
-    isWinner() { // scan all fields for symbol * 3
-      let len = this.init.length - 1;
+    cells() {
+      // scan all cells for symbol * 3
+      let base = this.board.slice();
+      let len = base.length - 1;
 
-      let columns = [];
-      for (let c = 0; c <= len; c++) {
-        let col = this.init.map(x => (x[c]));
-        columns.push(col);
-      }
+      let columns = base.reduce((acc, curr, i) => {
+        let column = base.map(x => x.slice(i, i + 1)[0])
+        acc.push(column)
+        return acc;
+      }, []);
 
-      let diag_lr = []; // diagonal left to right
-      let diag_rl = []; // diagonal right to left
-      for (let d = 0; d <= len; d++) {
-        diag_lr.push(this.init[d][d]);
-        diag_rl.push(this.init[len - d][d]);
-      }
+      let diagonals = base.reduce((acc, curr, i) => {
+        acc[0].push(curr[i])
+        acc[1].push(curr[len - i])
+        return acc;
+      }, [[], []])
 
-      let board = [
-        ...this.init,
-        ...columns,
-        diag_lr,
-        diag_rl
-      ]
-      this.winner = board.some((arr) => arr.every(e => e === this.player)) ?
+      return base.concat(columns, diagonals);
+    },
+    isWinner() {
+      let cells = this.cells();
+      this.winner = cells.some((arr) => arr.every(e => e === this.player)) ?
         this.player : false
     },
     isRunning() { // run untill slots are taken or player is winner
-      return this.init.some(x => x.includes(false)) && !this.winner;
+      return this.board.some(x => x.includes(false)) && !this.winner && params.length > 0;
     },
     run() {
       while (this.isRunning()) {
@@ -57,25 +56,25 @@ function solve(params) {
   game.run();
 
   console.log(game.winner ? `Player ${game.winner} wins!` : 'The game ended! Nobody wins :( ')
-  return game.init
+  return game.board
     .map(x => x.join('\t'))
-    .join('\n') + '\n';
+    .join('\n');
 }
 
 console.log(
   solve(
     ["0 1", "0 0", "0 2", "2 0", "1 0", "1 1", "1 2", "2 2", "2 1", "0 0"]
-  )
+  ) + '\n'
 )
 
 console.log(
   solve(
     ["0 0", "0 0", "1 1", "0 1", "1 2", "0 2", "2 2", "1 2", "2 2", "2 1"]
-  )
+  ) + '\n'
 )
 
 console.log(
   solve(
     ["0 1", "0 0", "0 2", "2 0", "1 0", "1 2", "1 1", "2 1", "2 2", "0 0"]
-  )
+  ) + '\n'
 )
