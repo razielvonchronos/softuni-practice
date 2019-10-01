@@ -4,21 +4,6 @@ function solve(params) {
     player: "X",
     winner: false,
     board: Array(3).fill().map(() => Array(3).fill(false)),
-    slot_use() { // check if slot is available or send log.
-      let [col, row] = params.shift().split(' ');
-      let available = game.board[col][row] === false;
-      if (available)
-        game.board[col][row] = this.player
-      else
-        console.log("This place is already taken. Please choose another!")
-      return available;
-    },
-    turn() { // Player's turn, return if trying to use unavailable slot
-      if (!this.slot_use())
-        return;
-      this.isWinner()
-      game.player = game.player === "X" ? "O" : "X"
-    },
     cells() {
       // scan all cells for symbol * 3
       let base = this.board.slice();
@@ -45,6 +30,21 @@ function solve(params) {
     },
     isRunning() { // run untill slots are taken or player is winner
       return this.board.some(x => x.includes(false)) && !this.winner && params.length > 0;
+    },
+    slot_use() { // check if slot is available or send log.
+      let [col, row] = params.shift().split(' ');
+      let available = game.board[col][row] === false;
+      if (available)
+        game.board[col][row] = this.player
+      else
+        console.log("This place is already taken. Please choose another!")
+      return available;
+    },
+    turn() { // Player's turn, return if trying to use unavailable slot
+      if (!this.slot_use())
+        return;
+      this.isWinner()
+      game.player = game.player === "X" ? "O" : "X"
     },
     run() {
       while (this.isRunning()) {
