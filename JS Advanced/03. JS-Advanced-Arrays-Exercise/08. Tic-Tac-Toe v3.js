@@ -1,4 +1,5 @@
 function solve(params) {
+  let moves = params.slice()
   let game =
   {
     player: "X",
@@ -28,11 +29,11 @@ function solve(params) {
       this.winner = cells.some((arr) => arr.every(e => e === this.player)) ?
         this.player : false
     },
-    isRunning() { // run untill slots are taken or player is winner
-      return this.board.some(x => x.includes(false)) && !this.winner && params.length > 0;
+    isRunning() { // run untill slots are taken, player is winner or moves is empty
+      return this.board.some(x => x.includes(false)) && !this.winner && moves.length > 0;
     },
     slot_use() { // check if slot is available or send log.
-      let [col, row] = params.shift().split(' ');
+      let [col, row] = moves.shift().split(' ');
       let available = game.board[col][row] === false;
       if (available)
         game.board[col][row] = this.player
