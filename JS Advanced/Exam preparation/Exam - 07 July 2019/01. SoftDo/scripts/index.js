@@ -4,15 +4,13 @@
 
 function mySolution() {
     let $test = false;
-    // extract el
+
     let el = {
         inputSection: document.querySelector('#inputSection'),
-        inputUsername: this.inputSection.querySelector('input'),
-        inputQuestion: this.inputSection.querySelector('textarea'),
-        inputButton: this.inputSection.querySelector('button'),
-        //
+        inputUsername: document.querySelector('#inputSection input'),
+        inputQuestion: document.querySelector('#inputSection textarea'),
+        inputButton: document.querySelector('#inputSection button'),
         pendingQuestions: document.querySelector('#pendingQuestions'),
-        //
         openQuestions: document.querySelector('#openQuestions'),
     }
 
@@ -28,14 +26,13 @@ function mySolution() {
     };
 
     function open(event) {
-        let actions = event.target.parentNode;
-        let buttons = actions.querySelectorAll('button');
-        let question = event.target.parentNode.parentNode;
         // move to opened questions
+        let question = event.target.parentNode.parentNode;
         question.className = "openQuestion";
         el.openQuestions.appendChild(question);
         // clear actions div and append reply button
-
+        let actions = event.target.parentNode;
+        let buttons = actions.querySelectorAll('button');
         buttons.forEach(x => x.remove());
         actions.appendChild(buildButton("Reply", "reply", [reply]));
         // add replies section
@@ -70,6 +67,12 @@ function mySolution() {
     }
 
     function buildQuestion() {
+        if(!el.inputQuestion.value.length)
+        {
+            el.inputQuestion.style.border = "1pt red solid"
+            alert("Please enter your question")
+            return;
+        }
         // question
         let question = document.createElement('div');
         question.classList.add('pendingQuestion');
