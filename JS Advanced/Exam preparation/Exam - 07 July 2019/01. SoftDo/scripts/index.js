@@ -21,7 +21,7 @@ function mySolution() {
     });
 
     function archive(event) {
-        let pendingQuestion = event.target.parentNode.parentNode;
+        let pendingQuestion = event.target.parentElement.parentElement;
         el.pendingQuestions.removeChild(pendingQuestion)
     };
 
@@ -43,7 +43,7 @@ function mySolution() {
     };
 
     function reply(event) {
-        let grandparent = event.target.parentNode.parentNode;
+        let grandparent = event.target.parentElement.parentElement;
         let replySection = grandparent.querySelector('div .replySection');
         let visible = replySection.style.display === "none";
         event.target.innerHTML = visible ? "Back" : "Reply";
