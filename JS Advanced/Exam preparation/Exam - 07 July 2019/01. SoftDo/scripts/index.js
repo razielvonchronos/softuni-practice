@@ -1,13 +1,30 @@
+// This is how you should load an function instead of <body onload="mySolution()">
+// var body = document.getElementsByTagName("body")[0];
+// body.onload = () => mySolution();
 
 function mySolution() {
-    let sections = {
+    let $test = false;
+    // extract el
+    let el = {
+        inputSection: document.querySelector('#inputSection'),
+        inputUsername: this.inputSection.querySelector('input'),
+        inputQuestion: this.inputSection.querySelector('textarea'),
+        inputButton: this.inputSection.querySelector('button'),
+        //
         pendingQuestions: document.querySelector('#pendingQuestions'),
+        //
         openQuestions: document.querySelector('#openQuestions'),
     }
 
+    el.inputButton.addEventListener("click", function () {
+        let question = buildQuestion();
+        el.pendingQuestions.appendChild(question);
+        [el.inputUsername, el.inputQuestion].forEach(x => x.value = '');
+    });
+
     function archive(event) {
         let pendingQuestion = event.target.parentNode.parentNode;
-        sections.pendingQuestions.removeChild(pendingQuestion)
+        el.pendingQuestions.removeChild(pendingQuestion)
     };
 
     function open(event) {
@@ -16,12 +33,12 @@ function mySolution() {
         let question = event.target.parentNode.parentNode;
         // move to opened questions
         question.className = "openQuestion";
-        sections.openQuestions.appendChild(question);
+        el.openQuestions.appendChild(question);
         // clear actions div and append reply button
 
         buttons.forEach(x => x.remove());
         actions.appendChild(buildButton("Reply", "reply", [reply]));
-        // add replies
+        // add replies section
         let replySection = buildReplies();
         question.appendChild(replySection);
     };
@@ -44,6 +61,39 @@ function mySolution() {
         input.value = '';
     }
 
+    function buildButton(title, className, fns) {
+        let btn = document.createElement('button');
+        btn.innerHTML = title;
+        btn.className = className;
+        fns.forEach(x => btn.addEventListener("click", x));
+        return btn;
+    }
+
+    function buildQuestion() {
+        // question
+        let question = document.createElement('div');
+        question.classList.add('pendingQuestion');
+        let img = document.createElement('img');
+        let span = document.createElement('span');
+        let p = document.createElement('p');
+        img.src = "./images/user.png";
+        img.width = '32';
+        img.height = '32';
+        span.innerHTML = el.inputUsername.value || 'Anonymous';
+        p.innerHTML = el.inputQuestion.value || 'Empty';
+        [img, span, p].forEach(x => question.appendChild(x))
+        // actions
+        let actions = document.createElement('div');
+        actions.classList.add('actions');
+        let buttons = [
+            buildButton("Archive", "archive", [archive]),
+            buildButton("Open", "open", [open])
+        ]
+        buttons.forEach(x => actions.appendChild(x))
+        question.appendChild(actions)
+        return question;
+    };
+
     function buildReplies() {
         let replySection = document.createElement('div');
         replySection.classList.add('replySection');
@@ -58,48 +108,53 @@ function mySolution() {
         ol.classList.add('reply');
         ol.type = '1';
         [input, btn_reply, ol].forEach(x => replySection.appendChild(x));
-
         return replySection;
     }
-    function buildButton(title, className, fns) {
-        let btn = document.createElement('button');
-        btn.innerHTML = title;
-        btn.className = className;
-        fns.forEach(x => btn.addEventListener("click", x));
-        return btn;
+
+    function test() {
+        let errors = []
+        let assert = {
+            equal(x, y, message) {
+                if (x !== y) {
+                    errors.push(`${message}:\nExpected\n${x}\nto be equal\n${y}`)
+                }
+            }
+        }
+
+        el.inputQuestion.value = "What means ... operator?";
+        el.inputUsername.value = "";
+        el.inputButton.click();
+
+        el.inputQuestion.value = "Kekekeke?";
+        el.inputUsername.value = "BellowZero";
+        el.inputButton.click();
+
+        // select second question and open it
+        let question = el.pendingQuestions.children[2];
+        question.querySelector('button.open').click();
+        question.querySelector('button.reply').click();
+        question.querySelector('input.replyInput').value = "I am just a simple reply";
+        question.querySelector('button.replyButton').click();
+
+        let $pendingQuestions = el.pendingQuestions.children;
+        let $openQuestions = el.openQuestions.children;
+        let $openQuestionsReplies = $openQuestions[1].querySelector('.replySection ol.reply').children;
+        let $expectedQuestion = '<img src="./images/user.png" width="32" height="32"><span>Anonymous</span><p>What means ... operator?</p><div class="actions"><button class="archive">Archive</button><button class="open">Open</button></div>';
+
+        assert.equal($pendingQuestions.length, 2, "Child elements inside pendingQuestion section are invalid");
+        assert.equal($pendingQuestions[0].textContent, "Pending Questions", 'The "Pending Questions" heading is invalid (text content)');
+        assert.equal($pendingQuestions[0].tagName, "H3", 'The "Pending Questions" heading is invalid (tag name)');
+        assert.equal($pendingQuestions[1].innerHTML, $expectedQuestion, 'The expected question is not structured properly (child structure)');
+        assert.equal($pendingQuestions[1].tagName, "DIV", 'The expected question is not structured properly. (tag name)');
+        assert.equal($openQuestions.length, 2, "Child elements inside pendingQuestion section are invalid");
+        assert.equal($openQuestions[0].textContent, "Open Questions", 'The "Open Questions" heading is invalid (text content)');
+        assert.equal($openQuestions[0].tagName, "H3", 'The "Pending Questions" heading is invalid (tag name)');
+        assert.equal($openQuestionsReplies.length, 1, "Child elements inside replySection are invalid");
+
+        console.log(`Tests finidhed, ${errors.length} errors`);
+        errors.forEach(x => console.log(`${x}\n`))
     }
-    function buildQuestion() {
-        let input = document.querySelectorAll('#inputSection textarea, #inputSection input[type="username"]');
-        // question
-        let questionDIV = document.createElement('div');
-        questionDIV.classList.add('pendingQuestion');
-        let img = document.createElement('img');
-        let span = document.createElement('span');
-        let p = document.createElement('p');
-        img.src = "./images/user.png";
-        img.width = '32';
-        img.height = '32';
-        span.innerHTML = input[1].value || 'Anonymous';
-        p.innerHTML = input[0].value || 'Empty';
-        input.forEach(x => x.value = '');
-        [img, span, p].forEach(x => questionDIV.appendChild(x))
 
-        // actions
-        let actions = document.createElement('div');
-        actions.classList.add('actions');
-        let buttons = [
-            buildButton("Archive", "archive", [archive]),
-            buildButton("Open", "open", [open])
-        ]
-        buttons.forEach(x => actions.appendChild(x))
-        questionDIV.appendChild(actions)
-        return questionDIV;
-    };
-
-    let ButtonSendQuestion = document.querySelector('#inputSection button');
-    ButtonSendQuestion.addEventListener("click", function () {
-        let question = buildQuestion();
-        sections.pendingQuestions.appendChild(question);
-        console.log('send was clicked');
-    });
+    if ($test)
+        test();
 }
