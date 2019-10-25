@@ -17,8 +17,8 @@ class Computer {
     findInstallation(name) {
         return this.installedPrograms.find(x => x.name === name);
     }
-    findProccess(name) {
-        return this.taskManager.find(x => x.name === name);
+    findProccess(app) {
+        return this.taskManager.find(x => x.name === app.name);
     }
     handleInstall(name, requiredSpace) {
         let app = {};
@@ -35,10 +35,10 @@ class Computer {
         proccess.cpuUsage = Number(((app.requiredSpace / this.cpuGHz) / 500) * 1.5);
         this.taskManager.push(proccess);
         if (this.ram_usage() >= 100 && this.cpu_usage() >= 100 || this.ram_usage() >= 100) {
-            throw new Error(`${app.name} caused out of memory exception`)
+            throw new Error(`${proccess.name} caused out of memory exception`)
         }
         if (this.cpu_usage() >= 100) {
-            throw new Error(`${app.name} caused out of cpu exception`)
+            throw new Error(`${proccess.name} caused out of cpu exception`)
         }
         return proccess;
     }
@@ -102,10 +102,8 @@ computer.openAProgram('Word');
 computer.openAProgram('Excel');
 computer.openAProgram('PowerPoint');
 computer.openAProgram('Solitare');
-
-computer.uninstallAProgram('Word');
-computer.installAProgram('Word', 165970);
 computer.openAProgram('Word');
+
 console.log(computer);
 performance(computer);
 console.log(computer.taskManagerView());
