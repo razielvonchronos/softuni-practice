@@ -44,16 +44,16 @@ class Company {
       let best = this.departments.sort((a, b) => {
          return this.sumAvgSalary(b) - this.sumAvgSalary(a);
       })[0];
-      best.employees
-         .sort((a, b) => a.username.localeCompare(b.username))
-         .sort((a, b) => b.salary - a.salary);
       let avgSalary = this.sumAvgSalary(best).toFixed(2);
       let msg = [];
       msg.push(`Best Department is: ${best.name}`);
       msg.push(`Average salary: ${avgSalary}`);
-      best.employees.forEach(e => {
-         msg.push(`${e.username} ${e.salary} ${e.position}`)
-      });
+      best.employees
+         .sort((a, b) => a.username.localeCompare(b.username))
+         .sort((a, b) => b.salary - a.salary)
+         .forEach(e => {
+            msg.push(`${e.username} ${e.salary} ${e.position}`)
+         });
 
       return msg.join('\n')
    }
