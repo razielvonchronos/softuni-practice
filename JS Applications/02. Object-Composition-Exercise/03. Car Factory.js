@@ -1,5 +1,4 @@
 
-
 function solve(input) {
   const engines = [
     { power: 90, volume: 1800 },
