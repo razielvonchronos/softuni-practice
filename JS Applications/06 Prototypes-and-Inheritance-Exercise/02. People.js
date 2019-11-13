@@ -19,7 +19,6 @@ function solve() {
         getSalary() {
             return this.salary;
         }
-
     }
 
     class Junior extends Employee {
@@ -28,6 +27,7 @@ function solve() {
             this.tasks.push(' is working on a simple task.');
         }
     }
+
     class Senior extends Employee {
         constructor(name, age) {
             super(name, age);
@@ -36,6 +36,7 @@ function solve() {
             this.tasks.push(' is supervising junior workers.');
         }
     }
+
     class Manager extends Employee {
         constructor(name, age) {
             super(name, age);
