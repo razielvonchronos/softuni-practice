@@ -1,5 +1,8 @@
 function attachEvents() {
-    console.log('TODO...');
+    let btnLoad = document.getElementById('btnLoad');
+    btnLoad.addEventListener('click', () => {
+
+    })
 }
 
 attachEvents();

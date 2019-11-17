@@ -1,6 +1,6 @@
 function solve() {
 
-    let stopId = {
+    let data = {
         name: '',
         next: 'depot'
     };
@@ -12,21 +12,20 @@ function solve() {
         buttons.forEach(x => x.disabled = !x.disabled);
     }
 
-    async function findStop() {
-        let response = await fetch(`https://judgetests.firebaseio.com/schedule/${stopId.next}.json`);
-        let data = await response.json();
-        return data;
-
-    }
 
     async function depart() {
-        stopId = await findStop();
-        busStop.textContent = `Next Stop is ${stopId.name}`;
-        buttonsToggle();
+        try {
+            let response = await fetch(`https://judgetests.firebaseio.com/schedule/${data.next}.json`);
+            data = await response.json();
+            busStop.textContent = `Next Stop is ${data.name}`;
+            buttonsToggle();
+        } catch (e) {
+            busStop.textContent = `Error`;
+        }
     }
 
     async function arrive() {
-        busStop.textContent = `Arriving at ${stopId.name}`;
+        busStop.textContent = `Arriving at ${data.name}`;
         buttonsToggle();
     }
 
