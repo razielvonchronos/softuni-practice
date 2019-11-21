@@ -71,29 +71,34 @@ function attachEvents() {
             span_upcoming.innerHTML += `<span class="forecast-data">${x.condition}</span>`;
             div.appendChild(span_upcoming);
         })
-
         return div;
+
     }
 
-    function handleLoad() {
-        let location_data = async () => await fetchLocation(input.value);
-        let today_data = async () => await fetchLocation(await location_data().code);
-        let upcoming_data = async () => await fetchLocation(await location_data().code);
-
+    async function handleLoad() {
+        let location_data = await fetchLocation(input.value);
         let forecast = document.getElementById('forecast');
         forecast.removeAttribute('style');
+        if (!location_data) {
+            forecast.textContent = "Error";
+            console.error(`Location "${input.value}" not found!`)
+        } else {
+            let today_data = await fetchToday(await location_data.code);
+            let upcoming_data = await fetchUpcoming(await location_data.code);
 
-        let current = document.getElementById('current');
-        current.appendChild(buildForecastHTML(today_data()));
-        let upcoming = document.getElementById('upcoming');
-        upcoming.appendChild(buildUpcomingHTML(await upcoming_data()));
+
+            let current = document.getElementById('current');
+            current.appendChild(buildForecastHTML(today_data));
+            let upcoming = document.getElementById('upcoming');
+            upcoming.appendChild(buildUpcomingHTML(upcoming_data));
+        }
     }
 
     btnLoad.addEventListener('click', handleLoad);
 
 
     (function () {
-        input.value = 'Barcelona'
+        input.value = 'Sofia'
         btnLoad.click();
     }())
 }
