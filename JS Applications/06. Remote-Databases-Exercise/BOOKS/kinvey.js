@@ -1,7 +1,7 @@
 
 
-const username = 'razielvonchronos';
-const password = 's120023s';
+const username = 'guest';
+const password = 'guest';
 const appUrl = 'https://baas.kinvey.com'
 const appKey = 'kid_SyGcJ9NhS';
 
@@ -17,28 +17,17 @@ function serializeData(x) {
   return x.json();
 }
 
-function makeHeaders(httpMethod, data) {
-  let headers = {
+function sendFetch(httpMethod, section, endpoint, data) {
+  const url = `${appUrl}/${section}/${appKey}/${endpoint}`;
+  return fetch(url, {
     method: httpMethod,
     headers: {
       'Authorization': `Basic ${btoa(`${username}:${password}`)}`,
+      'Content-type': 'application/json'
     },
+    body: JSON.stringify(data)
   }
-
-  if (httpMethod !== 'GET') {
-    headers.headers['Content-type'] = 'application/json';
-  }
-
-  if (httpMethod === "POST" || httpMethod === "PUT") {
-    headers.body = JSON.stringify(data)
-  }
-  return headers;
-}
-
-function sendFetch(method, module, endpoint, data = {}) {
-  const headers = makeHeaders(method, data);
-  const url = `${appUrl}/${module}/${appKey}/${endpoint}`;
-  return fetch(url, headers).then(handleError).then(serializeData);
+  ).then(handleError).then(serializeData);
 }
 
 export let kinvey = {
@@ -54,7 +43,7 @@ export let kinvey = {
       }
     },
     create: (data) => {
-      return sendFetch('POST', 'appdata', data);
+      return sendFetch('POST', 'appdata', 'books', data);
     },
     del: (id) => {
       return sendFetch("DELETE", 'appdata', `books/${id}`);
