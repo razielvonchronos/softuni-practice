@@ -1,0 +1,29 @@
+{{>header}}
+<form class="edit-trek" action="/edit/{{trek_data._id}}" method="post">
+  <div class="form-label-group">
+    <input type="text" name="location" class="form-control" placeholder="Location" required="" autofocus="" value="{{trek_data.location}}">
+    <label for="inputTrekName">Location</label>
+  </div>
+
+  <div class="form-label-group">
+    <input type="text" value="{{trek_data.date}}" name="dateTime" class="form-control" placeholder="Date" required="">
+    <label for="inputTrekDate">Date</label>
+  </div>
+
+  <div class="form-label-group">
+    <textarea type="text" name="description" class="form-control" placeholder="Description" required="">{{trek_data.description}}</textarea>
+    <label for="inputTrekDescription">Description</label>
+  </div>
+
+  <div class="form-label-group">
+    <input type="text" value="{{trek_data.image}}" name="imageURL" class="form-control" placeholder="Image" required="" autofocus="">
+    <label for="inputTrekImage">Image</label>
+  </div>
+  <div style="display: none">
+    <input name="organizer" value="{{trek_data.organizer}}" />
+    <input name="likes" value="{{trek_data.likes}}" />
+  </div>
+
+  <button class="btn btn-lg btn-dark btn-block" type="submit">Edit the trek</button>
+</form>
+{{>footer}}
