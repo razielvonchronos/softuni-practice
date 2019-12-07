@@ -1,6 +1,6 @@
 const baseUrl = 'https://baas.kinvey.com';
-const appKey = 'kid_rkS_gR7aB';  
-const appSecret = '603a2da72f024cc9847c51303f47d353';
+const appKey = 'kid_ryD77R_aB';  
+const appSecret = '25442ec904e1452c924c1658924ecaa2';
 
 function makeAuth(type) {
     return type === 'Basic'
