@@ -1,6 +1,8 @@
+import { Notification } from "./utilities.js";
+
 const baseUrl = 'https://baas.kinvey.com';
-const appKey = 'kid_ryD77R_aB';  
-const appSecret = '25442ec904e1452c924c1658924ecaa2';
+const appKey = 'kid_HyLYq81RH';
+const appSecret = '276fdd77aa4649a58ca8501b3e0ea8c9';
 
 function makeAuth(type) {
     return type === 'Basic'
@@ -17,21 +19,27 @@ function makeHeaders(method, data, type) {
         },
     };
 
-    if(method === 'POST' || method === 'PUT'){
+    if (method === 'POST' || method === 'PUT') {
         headers.body = JSON.stringify(data);
     }
 
     return headers;
 }
 
-function handleError(res){
-    if(res.status === 409) {
-        alert('This username is already used!');
+function handleError(res) {
+    if (res.status === 401) {
+        Notification('error', 'Invalid credentials. Please retry your request with correct credentials!');
     }
-    if (!res.ok) { 
+    if (res.status === 404) {
+        Notification('error', 'This entity not found in the collection');
+    }
+    if (res.status === 409) {
+        Notification('error', 'This username is already used!');
+    }
+    if (!res.ok) {
         throw new Error(`Something went wrong! Status: ${res.status}, Status text: ${res.statusText}`);
     }
-    if(res.status === 204){
+    if (res.status === 204) {
         return res;
     }
     return res.json();
@@ -56,7 +64,7 @@ export function put(module, endpoint, data, type) {
     const headers = makeHeaders('PUT', data, type);
     return fetchData(module, endpoint, headers);
 }
-    
+
 export function del(module, endpoint, type) {
     const headers = makeHeaders('DELETE', type);
     return fetchData(module, endpoint, headers);

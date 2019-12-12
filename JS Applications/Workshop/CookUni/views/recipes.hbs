@@ -1,0 +1,40 @@
+{{> header}}
+<h1 class="text-center">Our Recipes</h1>
+<div id="sharedRecipes">
+    {{#each recipes_data}}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="our-team-main">
+                    <div class="team-front">
+                        <img src="{{this.categoryImageURL}}" />
+                        <h3>{{this.meal}}</h3>
+                        <p>{{this.category}}</p>
+                    </div>
+
+                    <div class="team-back">
+                        <div class="back-side-info">
+                            <h4>Ingredients</h4>
+                            <ul>
+                                {{#each ingredients}}
+                                <li>{{this}}</li>
+                                {{/each}}
+                            </ul>
+                            <a href="/#/recipe/{{this._id}}">View the recepie</a>
+                        </div>
+
+                        <img class="foodImage" src="{{this.foodImageURL}}" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <div id='foodNotFound'>
+        <img src="https://t4.ftcdn.net/jpg/00/62/17/31/240_F_62173114_ozantkVtkPgzL0fxssAkTqKX1FHPr0UW.jpg" />
+        <h3>Food not found...</h3>
+    </div>
+    {{/each}}
+</div>
+{{> footer}}
