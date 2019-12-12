@@ -74,7 +74,6 @@ function main() {
       setHeaderInfo(ctx);
       const data = await kinvey.trekFindOne(ctx.params.id);
       if (data) {
-        console.log(data)
         ctx.trek_data = data;
         this.loadPartials(globalPartials)
           .partial('../views/edit.hbs');

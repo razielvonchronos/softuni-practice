@@ -89,7 +89,7 @@ export function trekCreate(ctx) {
 
 export function trekEdit(ctx) {
   toggleLoading(true);
-  const errors = Service.TrekValidation(ctx.params);
+  const errors = TrekValidation(ctx.params);
   if (errors.length === 0) {
     const { id, location, dateTime, description, imageURL, likes, organizer } = ctx.params
     kinvey.trekUpdate({ _id: id, location, date: dateTime, description, image: imageURL, likes, organizer })
