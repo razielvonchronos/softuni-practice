@@ -11,11 +11,11 @@ function main() {
       const partials = {
         ...globalPartials,
       }
-      let partial = '../views/home.hbs';
+      let partial = '../views/welcome.hbs';
       if (ctx.isAuth) {
         ctx.ideas = await kinvey.ideaFindAll();
         ctx.ideas.sort((a, b) => b.likes - a.likes);
-        partial = '../views/ideas.hbs'
+        partial = '../views/home.hbs'
       }
       this.loadPartials(partials).partial(partial);
     });
@@ -64,26 +64,18 @@ function main() {
         ctx.idea = data;
         ctx.isCreator = data.organizer === localStorage.getItem('username');
         this.loadPartials(globalPartials).partial('../views/idea.hbs');
-        const app = this;
         document.addEventListener('submit', (e) => {
           e.preventDefault();
-          const formData = new FormData(e.target);
-          let data = {
-            id: ctx.idea._id,
-            username: ctx.username,
-            newComment: formData.get('newComment'),
-            form: e.target
-          }
-          Service.ideaComment(ctx, data).then(res => {
-            ctx.idea = res;
-            this.loadPartials(globalPartials).partial('../views/idea.hbs');
-          });
         });
       }
     })
 
     this.post('#/idea/:id', async function (ctx) {
-      console.log(ctx)
+      setHeaderInfo(ctx);
+      Service.ideaComment(ctx).then(res => {
+        ctx.idea = res;
+        this.loadPartials(globalPartials).partial('../views/idea.hbs');
+      });
     })
 
     this.get('#/like/:id', function (ctx) {

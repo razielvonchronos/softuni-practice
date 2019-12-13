@@ -9,7 +9,7 @@ export function UserValidation(data) {
     errors.push('The username should be at least 3 characters long');
   }
   if (password.length < 3) {
-    errors.push('The password should be at least 6 characters long');
+    errors.push('The password should be at least 3 characters long');
 
   }
   if (password !== repeatPassword) {
@@ -91,12 +91,12 @@ export function ideaCreate(ctx) {
   }
 }
 
-export async function ideaComment(ctx, data) {
+export async function ideaComment(ctx) {
   toggleLoading(true);
-  const { id, username, newComment, form } = data;
+  const { id, newComment } = ctx.params;
   let idea_data = await kinvey.ideaFindOne(id);
   idea_data.comments.push({
-    from: username,
+    from: ctx.username,
     comment: newComment
   });
 
