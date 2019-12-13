@@ -40,7 +40,6 @@ function main() {
     this.get('#/profile', async function (ctx) {
       setHeaderInfo(ctx);
       ctx.ideas = await kinvey.userideas(ctx.user_id);
-      console.log(ctx.ideas)
       this.loadPartials(globalPartials).partial('../views/profile.hbs')
     })
 
